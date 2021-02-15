@@ -1,72 +1,39 @@
 package me.juan.practica1.heritage;
 
-import com.google.gson.Gson;
 import lombok.Getter;
 import me.juan.core.database.MongoDB;
-import me.juan.practica1.Main;
-import org.bson.Document;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 @Getter
 public class Product {
 
-    @Getter
-    private static final HashMap<UUID, Product> productHashMapUuid = new HashMap<>();
-    @Getter
-    private static final HashMap<String, Product> productHashMapString = new HashMap<>();
 
+    public static MongoDB.MongoDatabase mongoDatabase;
     private final String name;
     private final UUID uuid;
     private final int limit;
 
     public Product(String name, int limit) throws Exception {
-        if (exists(name, false))
-            throw new Exception("This product already exists");
+        if (get(name, false) != null)
+            throw new Exception("Este producto ya existe.");
         this.name = name;
         this.limit = limit;
         uuid = UUID.randomUUID();
-        index();
-        register();
-    }
-
-    public static Product loadByUuid(UUID uuid) {
-        MongoDB.MongoDatabase mongoDB = Main.getMongoDatabase();
-        for (Document document : mongoDB.findSpecificDefault(new String[]{"uuid"}, new Object[]{uuid})) {
-            Gson gson = new Gson();
-            return gson.fromJson(document.toJson(), Product.class).index();
-        }
-        return null;
-    }
-
-    public static Product loadByName(String name) {
-        MongoDB.MongoDatabase mongoDB = Main.getMongoDatabase();
-        for (Document document : mongoDB.findDefault("name", name)) {
-            Gson gson = new Gson();
-            return gson.fromJson(document.toJson(), Product.class).index();
-        }
-        return null;
+        mongoDatabase.add(null, this);
     }
 
 
-
-    public boolean register() {
-        MongoDB.MongoDatabase mongoDB = Main.getMongoDatabase();
-        mongoDB.add(null, this);
-        return true;
+    public static Product get(String id, boolean isUuid) {
+        return (isUuid ? getByUUID(UUID.fromString(id)) : getByName(id));
     }
 
-    public boolean exists(String id, boolean isUuid){
-        MongoDB.MongoDatabase mongoDB = Main.getMongoDatabase();
-        return  (mongoDB.exist(mongoDB.findCustom("Licences",(isUuid ? "uuid" : "name"), id)));
+    private static Product getByName(String name) {
+        return mongoDatabase.get(mongoDatabase.findCustom("Products", "name", name), Product.class);
     }
 
-    public Product index() {
-        productHashMapUuid.put(getUuid(), this);
-        productHashMapString.put(getName(), this);
-        return this;
+    private static Product getByUUID(UUID uuid) {
+        return mongoDatabase.get(mongoDatabase.findCustom("Products", "uuid", uuid), Product.class);
     }
-
 
 }
