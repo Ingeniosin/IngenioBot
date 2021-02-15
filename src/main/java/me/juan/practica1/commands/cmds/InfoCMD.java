@@ -2,7 +2,6 @@ package me.juan.practica1.commands.cmds;
 
 import me.juan.core.utils.StringUtil;
 import me.juan.core.utils.TimeUtil;
-import me.juan.practica1.Main;
 import me.juan.practica1.commands.Command;
 import me.juan.practica1.heritage.Buyer;
 import me.juan.practica1.heritage.Licence;
@@ -21,7 +20,7 @@ public class InfoCMD extends Command {
     @Override
     public void run(String[] args) {
         if (args.length == 1) {
-            err("Usa !create help, si necesitas ayuda.");
+            help();
             return;
         }
         String subcommand_1 = args[1];
@@ -29,6 +28,7 @@ public class InfoCMD extends Command {
             case "help":
                 help();
                 return;
+            case "users":
             case "user":
                 if (args.length == 2) {
                     err("Commando invalido, !INFO USER <NOMBRE>");
@@ -41,9 +41,10 @@ public class InfoCMD extends Command {
                     err("Este usuario no existe.");
                     return;
                 }
-                getChannel().sendMessage(buyer.usuarioGenerado("Información de '" + buyer.getName() + "'")).complete();
+                getChannel().sendMessage(buyer.usuarioGenerado("Información de '" + buyer.getName() + "':")).complete();
 
                 return;
+            case "products":
             case "product":
                 if (args.length == 2) {
                     err("Commando invalido, !INFO PRODUCT <NOMBRE>\"");
@@ -56,42 +57,42 @@ public class InfoCMD extends Command {
                     err("Este producto no existe.");
                     return;
                 }
-                getChannel().sendMessage(product.productoGenerado("Información de producto")).complete();
+                getChannel().sendMessage(product.productoGenerado("Información de producto:")).complete();
 
                 return;
+            case "licences":
             case "licence":
-                if (args.length == 3) {
+                if (args.length == 2) {
                     err("Commando invalido, !INFO LICENCE <KEY>\"");
                     return;
                 }
                 subcommand_2 = args[2];
-
-                Licence licence = Licence.get(subcommand_2, false);
+                Licence licence = Licence.get(subcommand_2, true);
                 if (licence == null) {
                     err("Esta licencia no existe.");
                     return;
                 }
-                getChannel().sendMessage(licence.getInfo("Información de licencia")).complete();
+                getChannel().sendMessage(licence.getInfo("Información de licencia:")).complete();
 
                 return;
         }
-        err("Usa !create help, si necesitas ayuda.");
+        help();
     }
 
 
     private void help() {
         EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setTitle("**Generador de licencias** \nㅤ\n*Comando 'Create':*\nㅤ\n")
-                .addField(StringUtil.comentarDiscord2("  *  !INFO USER <NOMBRE>"), "      ⇝ Crea un usuario para añadirle una licencia.", false)
+                .setTitle("**Generador de licencias** \nㅤ\n*Comando 'Info':*\nㅤ\n")
+                .addField(StringUtil.comentarDiscord2("  *  !INFO USER <NOMBRE>"), "      ⇝ Información de un usuario.", false)
                 .addBlankField(false)
-                .addField(StringUtil.comentarDiscord2("  *  !INFO PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>"), "      ⇝ Crear un producto.", false)
+                .addField(StringUtil.comentarDiscord2("  *  !INFO PRODUCT <NOMBRE>"), "      ⇝ Información de un producto.", false)
                 .addBlankField(false)
-                .addField(StringUtil.comentarDiscord2("  *  !INFO LICENCE <USER> <PRODUCT>"), "      ⇝ Generar una licencia.", false)
+                .addField(StringUtil.comentarDiscord2("  *  !INFO LICENCE <KEY>"), "      ⇝ Información de una licencia.", false)
                 .addBlankField(false)
                 .setThumbnail("https://i.ibb.co/CH3Px5q/icons8-general-ledger-1080px-1.png")
                 .setColor(Color.gray)
                 .setTimestamp(TimeUtil.getCalendar(new Date()).toInstant())
-                .setFooter("Announcement by JuanC's Licences", Main.getJda().getSelfUser().getEffectiveAvatarUrl());
+                .setFooter("Announcement by JuanC's Licences", "https://cdn.discordapp.com/avatars/300717914791739393/71a1b3984688f7ad11487e46eaed8b5f.png");
         getChannel().sendMessage(embedBuilder.build()).complete();
     }
 

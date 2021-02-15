@@ -2,10 +2,7 @@ package me.juan.practica1.commands;
 
 
 import me.juan.practica1.Main;
-import me.juan.practica1.commands.cmds.ClearCMD;
-import me.juan.practica1.commands.cmds.CreateCMD;
-import me.juan.practica1.commands.cmds.EndCMD;
-import me.juan.practica1.commands.cmds.InfoCMD;
+import me.juan.practica1.commands.cmds.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -22,6 +19,7 @@ public class CommandManager extends ListenerAdapter {
         new ClearCMD();
         new CreateCMD();
         new InfoCMD();
+        new ListCMD();
         new EndCMD(false);
     }
 

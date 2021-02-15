@@ -5,7 +5,6 @@ import lombok.Getter;
 import me.juan.core.database.MongoDB;
 import me.juan.core.utils.StringUtil;
 import me.juan.core.utils.TimeUtil;
-import me.juan.practica1.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -41,15 +40,15 @@ public class Product {
 
     public MessageEmbed productoGenerado(String title) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setTitle("**Generador de licencias** \nㅤ\n*" + title + "*\nㅤ\n")
-                .addField("Nombre:", "*" + StringUtil.comentarDiscord2(getName()) + "*", true)
-                .addField("Cantidad restante:", "*" + StringUtil.comentarDiscord2(limit == -1 ? "Infinito" : "" + limit) + "*", true)
-                .addField("ID:", "*" + StringUtil.comentarDiscord2("" + getUuid()) + "*", false)
+                .setTitle("**" + title + "**\nㅤ\n")
+                .addField("Nombre:", "**" + StringUtil.comentarDiscord2(getName()) + "**", true)
+                .addField("Cantidad restante:", "**" + StringUtil.comentarDiscord2(limit == -1 ? "Infinito" : "" + limit) + "**", true)
+                .addField("ID:", "**" + StringUtil.comentarDiscord2("" + getUuid()) + "**", false)
                 .addBlankField(false)
                 .setThumbnail("https://i.ibb.co/PmTKp4C/icons8-facebook-like-1080px.png")
-                .setColor(Color.gray)
+                .setColor(Color.cyan)
                 .setTimestamp(TimeUtil.getCalendar(new Date()).toInstant())
-                .setFooter("Announcement by JuanC's Licences", Main.getJda().getSelfUser().getEffectiveAvatarUrl());
+                .setFooter("Announcement by JuanC's Licences", "https://cdn.discordapp.com/avatars/300717914791739393/71a1b3984688f7ad11487e46eaed8b5f.png");
         return embedBuilder.build();
     }
 

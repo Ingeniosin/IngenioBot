@@ -3,15 +3,16 @@ package me.juan.practica1.commands.cmds;
 import me.juan.core.utils.JavaUtils;
 import me.juan.core.utils.StringUtil;
 import me.juan.core.utils.TimeUtil;
-import me.juan.practica1.Main;
 import me.juan.practica1.commands.Command;
 import me.juan.practica1.heritage.Buyer;
 import me.juan.practica1.heritage.Licence;
 import me.juan.practica1.heritage.Product;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class CreateCMD extends Command {
 
@@ -22,7 +23,7 @@ public class CreateCMD extends Command {
     @Override
     public void run(String[] args) {
         if (args.length == 1) {
-            err("Usa !create help, si necesitas ayuda.");
+            help();
             return;
         }
         String subcommand_1 = args[1];
@@ -43,12 +44,12 @@ public class CreateCMD extends Command {
                 }
                 return;
             case "product":
-                if (args.length == 3) {
+                if (args.length == 2) {
                     err("Commando invalido, !CREATE PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>\"");
                     return;
                 }
                 subcommand_2 = args[2];
-                String subcommand_3 = args[3];
+                String subcommand_3 = (args.length == 4 ? args[3] : "" + -1);
                 Integer i = JavaUtils.tryParseInteger(subcommand_3);
                 if (i == null) {
                     err("El limite debe ser un numero");
@@ -68,13 +69,16 @@ public class CreateCMD extends Command {
                 subcommand_2 = args[2];
                 subcommand_3 = args[3];
                 try {
-                    getChannel().sendMessage(new Licence(subcommand_2, subcommand_3).getInfo("Licencia generada!")).complete();
+                    MessageEmbed licencia = new Licence(subcommand_2, subcommand_3).getInfo("Licencia generada!");
+                    getChannel().sendMessage("Generando licencia...").queue(response /* => Message */ -> {
+                        response.editMessage(licencia).queueAfter(2, TimeUnit.SECONDS);
+                    });
                 } catch (Exception exception) {
                     err(exception.getMessage());
                 }
                 return;
         }
-        err("Usa !create help, si necesitas ayuda.");
+        help();
     }
 
 
@@ -90,7 +94,7 @@ public class CreateCMD extends Command {
                 .setThumbnail("https://i.ibb.co/CH3Px5q/icons8-general-ledger-1080px-1.png")
                 .setColor(Color.gray)
                 .setTimestamp(TimeUtil.getCalendar(new Date()).toInstant())
-                .setFooter("Announcement by JuanC's Licences", Main.getJda().getSelfUser().getEffectiveAvatarUrl());
+                .setFooter("Announcement by JuanC's Licences", "https://cdn.discordapp.com/avatars/300717914791739393/71a1b3984688f7ad11487e46eaed8b5f.png");
         getChannel().sendMessage(embedBuilder.build()).complete();
     }
 

@@ -50,11 +50,11 @@ public class Licence {
 
 
     public static boolean exist(Object id, boolean isUuid) {
-        return mongoDatabase.exist(mongoDatabase.getDefCollection().find(Filters.eq(isUuid ? "uuid" : "name", id.toString())));
+        return mongoDatabase.exist(mongoDatabase.getDefCollection().find(Filters.eq(isUuid ? "key" : "name", id.toString())));
     }
 
     public static Licence get(Object id, boolean isUuid) {
-        return mongoDatabase.get(mongoDatabase.getDefCollection().find(Filters.eq(isUuid ? "uuid" : "name", id.toString())), Licence.class);
+        return mongoDatabase.get(mongoDatabase.getDefCollection().find(Filters.eq(isUuid ? "key" : "name", id.toString())), Licence.class);
     }
 
 
@@ -83,6 +83,14 @@ public class Licence {
         return Product.get(getProductUuid(), true);
     }
 
+    public String getKeyAndName() {
+        return getProduct().getName() + ":" + getKey();
+    }
+
+    public String getProductAndOwner() {
+        return getBuyer().getName() + " [" + getProduct().getName() + "] (" + getKey() + ")";
+    }
+
     public MessageEmbed getInfo(String title) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE d 'de' MMMM 'a las' hh:mm a");
         EmbedBuilder embedBuilder = new EmbedBuilder()
@@ -95,9 +103,9 @@ public class Licence {
                 .addField("Key:", StringUtil.comentarDiscord2(getKey().toString()), false)
                 .addBlankField(false)
                 .setThumbnail("https://i.ibb.co/xMDX27s/icons8-key-1080px-1.png")
-                .setColor(Color.gray)
+                .setColor(Color.RED)
                 .setTimestamp(TimeUtil.getCalendar(new Date()).toInstant())
-                .setFooter("Announcement by Ingenio's Licences", "https://cdn.discordapp.com/avatars/300717914791739393/71a1b3984688f7ad11487e46eaed8b5f.png");
+                .setFooter("Announcement by JuanC's Licences", "https://cdn.discordapp.com/avatars/300717914791739393/71a1b3984688f7ad11487e46eaed8b5f.png");
         return embedBuilder.build();
     }
 
