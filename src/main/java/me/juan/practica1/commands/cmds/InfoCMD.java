@@ -1,6 +1,5 @@
 package me.juan.practica1.commands.cmds;
 
-import me.juan.core.utils.JavaUtils;
 import me.juan.core.utils.StringUtil;
 import me.juan.core.utils.TimeUtil;
 import me.juan.practica1.Main;
@@ -13,10 +12,10 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import java.awt.*;
 import java.util.Date;
 
-public class CreateCMD extends Command {
+public class InfoCMD extends Command {
 
-    public CreateCMD() {
-        super("create", true);
+    public InfoCMD() {
+        super("info", true);
     }
 
     @Override
@@ -32,46 +31,48 @@ public class CreateCMD extends Command {
                 return;
             case "user":
                 if (args.length == 2) {
-                    err("Commando invalido, !CREATE USER <NOMBRE>");
+                    err("Commando invalido, !INFO USER <NOMBRE>");
                     return;
                 }
                 String subcommand_2 = args[2];
-                try {
-                    getChannel().sendMessage(new Buyer(subcommand_2).usuarioGenerado("Usuario creado!")).complete();
-                } catch (Exception exception) {
-                    err(exception.getMessage());
+
+                Buyer buyer = Buyer.get(subcommand_2, false);
+                if (buyer == null) {
+                    err("Este usuario no existe.");
+                    return;
                 }
+                getChannel().sendMessage(buyer.usuarioGenerado("Información de '" + buyer.getName() + "'")).complete();
+
                 return;
             case "product":
-                if (args.length == 3) {
-                    err("Commando invalido, !CREATE PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>\"");
+                if (args.length == 2) {
+                    err("Commando invalido, !INFO PRODUCT <NOMBRE>\"");
                     return;
                 }
                 subcommand_2 = args[2];
-                String subcommand_3 = args[3];
-                Integer i = JavaUtils.tryParseInteger(subcommand_3);
-                if (i == null) {
-                    err("El limite debe ser un numero");
+
+                Product product = Product.get(subcommand_2, false);
+                if (product == null) {
+                    err("Este producto no existe.");
                     return;
                 }
-                try {
-                    getChannel().sendMessage(new Product(subcommand_2, i).productoGenerado("Producto creado!")).complete();
-                } catch (Exception exception) {
-                    err(exception.getMessage());
-                }
+                getChannel().sendMessage(product.productoGenerado("Información de producto")).complete();
+
                 return;
             case "licence":
                 if (args.length == 3) {
-                    err("Commando invalido, !CREATE LICENCE <USER> <PRODUCT>\"");
+                    err("Commando invalido, !INFO LICENCE <KEY>\"");
                     return;
                 }
                 subcommand_2 = args[2];
-                subcommand_3 = args[3];
-                try {
-                    getChannel().sendMessage(new Licence(subcommand_2, subcommand_3).getInfo("Licencia generada!")).complete();
-                } catch (Exception exception) {
-                    err(exception.getMessage());
+
+                Licence licence = Licence.get(subcommand_2, false);
+                if (licence == null) {
+                    err("Esta licencia no existe.");
+                    return;
                 }
+                getChannel().sendMessage(licence.getInfo("Información de licencia")).complete();
+
                 return;
         }
         err("Usa !create help, si necesitas ayuda.");
@@ -81,11 +82,11 @@ public class CreateCMD extends Command {
     private void help() {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle("**Generador de licencias** \nㅤ\n*Comando 'Create':*\nㅤ\n")
-                .addField(StringUtil.comentarDiscord2("  *  !CREATE USER <NOMBRE>"), "      ⇝ Crea un usuario para añadirle una licencia.", false)
+                .addField(StringUtil.comentarDiscord2("  *  !INFO USER <NOMBRE>"), "      ⇝ Crea un usuario para añadirle una licencia.", false)
                 .addBlankField(false)
-                .addField(StringUtil.comentarDiscord2("  *  !CREATE PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>"), "      ⇝ Crear un producto.", false)
+                .addField(StringUtil.comentarDiscord2("  *  !INFO PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>"), "      ⇝ Crear un producto.", false)
                 .addBlankField(false)
-                .addField(StringUtil.comentarDiscord2("  *  !CREATE LICENCE <USER> <PRODUCT>"), "      ⇝ Generar una licencia.", false)
+                .addField(StringUtil.comentarDiscord2("  *  !INFO LICENCE <USER> <PRODUCT>"), "      ⇝ Generar una licencia.", false)
                 .addBlankField(false)
                 .setThumbnail("https://i.ibb.co/CH3Px5q/icons8-general-ledger-1080px-1.png")
                 .setColor(Color.gray)

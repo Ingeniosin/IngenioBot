@@ -42,8 +42,6 @@ public class Main {
 
     public static void main(String[] strings) {
         long time = System.currentTimeMillis();
-
-
         if (!initDB()) return;
         if (!initDiscord()) return;
 
@@ -64,10 +62,6 @@ public class Main {
         }
         messageChannel = jda.getTextChannelById("810540860261269584");
         jda.addEventListener(new CommandManager());
-
-
-        //messageChannel.sendMessage(licence.getInfo("Licencia generada!").build()).complete();*/
-
         return true;
     }
 
@@ -77,7 +71,7 @@ public class Main {
         if (mongoDB.isConnected()) {
             Licence.mongoDatabase = mongoDB.getDatabase("LicenceDB").setDefaultCollection("Licences");
             Product.mongoDatabase = mongoDB.getDatabase("LicenceDB").setDefaultCollection("Products");
-            Buyer.mongoDatabase = mongoDB.getDatabase("LicenceDB").setDefaultCollection("Products");
+            Buyer.mongoDatabase = mongoDB.getDatabase("LicenceDB").setDefaultCollection("Buyers");
         } else {
             System.out.println("No-Connected");
             return false;

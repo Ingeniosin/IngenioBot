@@ -3,7 +3,9 @@ package me.juan.practica1.commands;
 
 import me.juan.practica1.Main;
 import me.juan.practica1.commands.cmds.ClearCMD;
+import me.juan.practica1.commands.cmds.CreateCMD;
 import me.juan.practica1.commands.cmds.EndCMD;
+import me.juan.practica1.commands.cmds.InfoCMD;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -18,6 +20,8 @@ public class CommandManager extends ListenerAdapter {
 
     private void initEssentials() {
         new ClearCMD();
+        new CreateCMD();
+        new InfoCMD();
         new EndCMD(false);
     }
 
@@ -37,8 +41,11 @@ public class CommandManager extends ListenerAdapter {
             args[0] = args[0].replace("!", "");
             for (Command cmd : Command.getCommandList()) {
                 if (cmd.getCmd().equalsIgnoreCase(args[0])) {
+                    if (cmd.isOp() && !channel.getId().equalsIgnoreCase("810540860261269584"))
+                        return;
+
                     Main.space();
-                    cmd.setChannel(channel).run(args);
+                    cmd.setChannel(channel).setMessage(msg).run(args);
                     Main.space();
                     return;
                 }
