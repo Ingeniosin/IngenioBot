@@ -1,7 +1,6 @@
 package me.juan.practica1.commands;
 
 
-import me.juan.practica1.Main;
 import me.juan.practica1.commands.cmds.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -41,10 +40,7 @@ public class CommandManager extends ListenerAdapter {
                 if (cmd.getCmd().equalsIgnoreCase(args[0])) {
                     if (cmd.isOp() && !channel.getId().equalsIgnoreCase("810540860261269584"))
                         return;
-
-                    Main.space();
                     cmd.setChannel(channel).setMessage(msg).run(args);
-                    Main.space();
                     return;
                 }
             }

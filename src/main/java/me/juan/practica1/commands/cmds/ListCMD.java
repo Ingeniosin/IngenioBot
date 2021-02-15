@@ -33,14 +33,17 @@ public class ListCMD extends Command {
             case "help":
                 help();
                 return;
+            case "u":
             case "users":
             case "user":
                 listUsers();
                 return;
+            case "p":
             case "products":
             case "product":
                 listProducts();
                 return;
+            case "l":
             case "licences":
             case "licence":
                 listLicences();
@@ -93,8 +96,8 @@ public class ListCMD extends Command {
         }
 
         EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setTitle("**Lista de productos**")
-                .addField("Productos registrados:", "**"
+                .setTitle("**Lista de licencias**")
+                .addField("Licencias generadas:", "**"
                         + (StringUtil.comentarDiscord2(licences.isEmpty() ? "Ninguna licencia generada." : "" +
                         "➭ " + StringUtils.join(licences.stream().map(Licence::getProductAndOwner)
                         .collect(Collectors.toList()), "\n➭ ")) + "**"), false)
@@ -121,7 +124,6 @@ public class ListCMD extends Command {
                 .setFooter("Announcement by JuanC's Licences", "https://cdn.discordapp.com/avatars/300717914791739393/71a1b3984688f7ad11487e46eaed8b5f.png");
         getChannel().sendMessage(embedBuilder.build()).complete();
     }
-
 
 
     private void err(String string) {

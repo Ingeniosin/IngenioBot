@@ -28,6 +28,7 @@ public class InfoCMD extends Command {
             case "help":
                 help();
                 return;
+            case "u":
             case "users":
             case "user":
                 if (args.length == 2) {
@@ -44,10 +45,11 @@ public class InfoCMD extends Command {
                 getChannel().sendMessage(buyer.usuarioGenerado("Información de '" + buyer.getName() + "':")).complete();
 
                 return;
+            case "p":
             case "products":
             case "product":
                 if (args.length == 2) {
-                    err("Commando invalido, !INFO PRODUCT <NOMBRE>\"");
+                    err("Commando invalido, !INFO PRODUCT <NOMBRE>");
                     return;
                 }
                 subcommand_2 = args[2];
@@ -60,10 +62,11 @@ public class InfoCMD extends Command {
                 getChannel().sendMessage(product.productoGenerado("Información de producto:")).complete();
 
                 return;
+            case "l":
             case "licences":
             case "licence":
                 if (args.length == 2) {
-                    err("Commando invalido, !INFO LICENCE <KEY>\"");
+                    err("Commando invalido, !INFO LICENCE <KEY>");
                     return;
                 }
                 subcommand_2 = args[2];

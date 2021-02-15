@@ -55,16 +55,11 @@ public class Buyer {
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setTitle("**" + title + "**\nㅤ\n")
                 .addField("Nombre:", "**" + StringUtil.comentarDiscord2(getName()) + "**", true)
-
                 .addField("Creado el:", "" + StringUtil.comentarDiscord2(StringUtil.upperCaseFirst(dateFormatter.format(creationTime.getTime()))), true)
-
                 .addField("Compras:", "**"
-
                         + (StringUtil.comentarDiscord2(getLicences().isEmpty() ? "Ninguna." : "" +
                         "➭ " + StringUtils.join(getLicences().stream().map(uuid1 -> Licence.get(uuid1, true).getKeyAndName().replace(":", " [") + "]")
                         .collect(Collectors.toList()), "\n➭ ")) + "**"), false)
-
-
                 .addField("ID:", "**" + StringUtil.comentarDiscord2("" + getUuid()) + "**", false)
                 .addBlankField(false)
                 .setThumbnail("https://i.ibb.co/PmTKp4C/icons8-facebook-like-1080px.png")

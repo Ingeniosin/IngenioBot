@@ -31,6 +31,8 @@ public class CreateCMD extends Command {
             case "help":
                 help();
                 return;
+            case "u":
+            case "users":
             case "user":
                 if (args.length == 2) {
                     err("Commando invalido, !CREATE USER <NOMBRE>");
@@ -43,9 +45,11 @@ public class CreateCMD extends Command {
                     err(exception.getMessage());
                 }
                 return;
+            case "p":
+            case "products":
             case "product":
                 if (args.length == 2) {
-                    err("Commando invalido, !CREATE PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>\"");
+                    err("Commando invalido, !CREATE PRODUCT <NOMBRE> <LIMITE(-1 = ∞)>");
                     return;
                 }
                 subcommand_2 = args[2];
@@ -61,9 +65,11 @@ public class CreateCMD extends Command {
                     err(exception.getMessage());
                 }
                 return;
+            case "l":
+            case "licences":
             case "licence":
                 if (args.length == 3) {
-                    err("Commando invalido, !CREATE LICENCE <USER> <PRODUCT>\"");
+                    err("Commando invalido, !CREATE LICENCE <USER> <PRODUCT>");
                     return;
                 }
                 subcommand_2 = args[2];
