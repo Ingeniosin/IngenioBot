@@ -16,7 +16,7 @@ public class Main {
     @Getter
     private static JDA jda;
 
-    private static String UrlDB = "mongodb://127.0.0.1:27017/";
+    private static String UrlDB = "mongodb+srv://ghoul:JuanC@cluster0.qpwxm.mongodb.net/";
 
 
     public static void main(String[] strings) {
